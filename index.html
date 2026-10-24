@@ -443,4 +443,30 @@ render=function(){prevRender();const page=document.querySelector('.ig-page');if(
 try{render()}catch(e){console.error('V19 Instagram',e)}
 })();
 </script>
+
+<style>
+/* V20: navigation is interactive regardless of the prior renderer's event binding. */
+.ig-page.v19-ig .ig-bottom{position:fixed!important;left:0!important;right:0!important;bottom:calc(env(safe-area-inset-bottom, 0px) + 1px)!important;z-index:999!important;pointer-events:auto!important;display:flex!important;justify-content:space-around!important;align-items:center!important;touch-action:manipulation!important}
+.ig-page.v19-ig .ig-bottom button{position:relative!important;z-index:1000!important;pointer-events:auto!important;touch-action:manipulation!important;cursor:pointer!important;display:grid!important;place-items:center!important;flex:1!important;border:0!important;background:transparent!important}
+.ig-page.v19-ig .ig-bottom button svg,.ig-page.v19-ig .ig-bottom button span{pointer-events:none!important}
+.ig-page.v19-ig .ig-stories .ig-story{touch-action:manipulation}
+</style>
+<script>
+/* Capture delegated taps on the bottom bar, independent of render() wrappers. */
+(function(){
+  if(window.__v20InstagramNavInstalled)return;
+  window.__v20InstagramNavInstalled=true;
+  document.addEventListener('click',function(e){
+    const button=e.target.closest&&e.target.closest('.ig-page .ig-bottom button[data-ig]');
+    if(!button)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    const target=button.getAttribute('data-ig');
+    if(target==='feed')nav('instagram');
+    else if(target==='profile'){igPersonId='me';nav('igProfile')}
+    else if(target==='explore')nav('igExplore');
+    else if(target==='dmList')nav('dmList');
+    else if(target==='newpost')nav('newpost');
+  },true);
+})();
+</script>
 </body></html>
