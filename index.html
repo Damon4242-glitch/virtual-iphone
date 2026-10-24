@@ -469,4 +469,71 @@ try{render()}catch(e){console.error('V19 Instagram',e)}
   },true);
 })();
 </script>
+<style>
+/* V21: Instagram creation suite, no changes to viewport/home wallpaper. */
+.v21-page{background:#0b0e14!important;color:#f6f6f8!important;min-height:100%;padding:0 0 100px!important}
+.v21-head{display:flex;align-items:center;justify-content:space-between;padding:17px 17px;border-bottom:1px solid #252830;gap:12px}
+.v21-head strong{font-size:18px}.v21-btn{background:#262a33;color:#fff;border:0;border-radius:11px;padding:11px 16px;font-size:14px;font-weight:600;cursor:pointer}
+.v21-blue{background:#168af5}.v21-field{display:block;width:100%;box-sizing:border-box;background:#1b1f27;color:white;border:1px solid #343943;border-radius:12px;padding:13px;margin:9px 0;font:inherit}
+.v21-label{display:block;margin:18px 16px 5px;font-size:14px;color:#c6c9d2}.v21-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:12px}
+.v21-photo-grid button{aspect-ratio:1;border:3px solid transparent;padding:0;background:#222;position:relative;overflow:hidden;border-radius:5px;cursor:pointer}
+.v21-photo-grid button.selected{border-color:#3898ff}.v21-photo-grid img{width:100%;height:100%;object-fit:cover}.v21-preview{height:230px;display:flex;align-items:center;justify-content:center;background:#171a21;color:#9da2ad;margin:14px 16px;border-radius:10px;overflow:hidden}
+.v21-preview img{width:100%;height:100%;object-fit:contain}.v21-note{color:#a8aab3;font-size:13px;padding:8px 16px;line-height:1.5}.v21-empty{padding:60px 24px;text-align:center;color:#a8aab3}.v21-row{display:flex;gap:12px;align-items:center;width:100%;padding:15px;background:transparent;color:white;border:0;border-bottom:1px solid #252830;text-align:left}
+.v21-page .ig-bottom{position:fixed!important;z-index:999!important;bottom:0!important;left:0!important;right:0!important;background:#0b0e14!important}
+.v21-feed .ig-post-media img{object-fit:contain}.v21-page textarea{resize:vertical}
+</style>
+<script>
+/* V21: bulk upgrade. Existing data and navigation stay compatible. */
+(function(){
+const previousRender=render;
+let selectedPhoto=-1, composer='post';
+state.igSaved=state.igSaved||{};
+const v21icon=(name)=>({back:'‹',post:'＋',save:'▣',heart:'♡'}[name]||name);
+const safeImage=(i)=>state.photos[i]||'';
+const bottom=()=>igBottom();
+const page=(body)=>`<section class="page ig-page v19-ig v21-page">${body}${bottom()}</section>`;
+const header=(name,right='')=>`<div class="v21-head"><button class="v21-btn" data-v21="feed">‹ 戻る</button><strong>${name}</strong>${right||'<span style="width:55px"></span>'}</div>`;
+function composerHTML(){let story=composer==='story';return page(header(story?'ストーリーズを作成':'新しい投稿',`<button class="v21-btn v21-blue" data-v21="publish">シェア</button>`)+`<div class="v21-preview" id="v21Preview">${selectedPhoto>=0&&safeImage(selectedPhoto)?`<img src="${safeImage(selectedPhoto)}" alt="プレビュー">`:'写真を選択してください'}</div><div style="padding:0 16px"><label class="v21-btn" style="display:inline-block">＋ iPhoneから写真を追加<input id="v21Upload" type="file" accept="image/*" hidden></label></div><label class="v21-label">写真アプリから選択</label><div class="v21-photo-grid">${state.photos.map((src,i)=>`<button data-v21="pick" data-i="${i}" class="${selectedPhoto===i?'selected':''}"><img src="${src}" alt="写真 ${i+1}"></button>`).join('')}</div>${!state.photos.length?'<p class="v21-note">写真がまだありません。上の「写真を追加」から取り込めるよ。</p>':''}<div style="padding:0 16px"><label class="v21-label" style="margin-left:0">投稿するアカウント</label><select class="v21-field" id="v21Author"><option value="自分">自分</option>${state.people.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('')}</select><textarea id="v21Caption" class="v21-field" rows="4" placeholder="${story?'ストーリーに文字を追加…':'キャプションを書く…'}"></textarea></div><p class="v21-note">投稿と写真はこの仮想iPhone内に保存されます。</p>`)}
+function savedHTML(){let ids=Object.keys(state.igSaved).filter(i=>state.igSaved[i]&&state.posts[i]);return page(header('保存済み')+(ids.length?ids.map(i=>{let p=state.posts[i];return `<button class="v21-row" data-v21="feed"><span style="width:64px;height:64px;background:#252830;display:grid;place-items:center">${p.image?`<img src="${p.image}" style="width:64px;height:64px;object-fit:cover">`:'▣'}</span><span><b>${esc(p.author)}</b><br>${esc((p.text||'').slice(0,70))}</span></button>`}).join(''):'<div class="v21-empty">保存した投稿はまだありません。</div>'))}
+function activityHTML(){return page(header('お知らせ')+'<div class="v21-empty">新しいお知らせはありません。<p class="v21-note">これは仮想Instagramのため、実際のInstagramの通知は届きません。</p></div>')}
+function bindV21(){
+ document.querySelectorAll('[data-v21]').forEach(b=>b.onclick=async()=>{let a=b.dataset.v21;
+ if(a==='feed')nav('instagram');
+ if(a==='newpost'){composer='post';selectedPhoto=-1;nav('v21Composer')}
+ if(a==='newstory'){composer='story';selectedPhoto=-1;nav('v21Composer')}
+ if(a==='saved')nav('v21Saved');
+ if(a==='activity')nav('v21Activity');
+ if(a==='pick'){selectedPhoto=Number(b.dataset.i);render()}
+ if(a==='publish'){
+  let text=(document.getElementById('v21Caption')?.value||'').trim(),author=document.getElementById('v21Author')?.value||'自分';
+  if(selectedPhoto<0&&!text){alert('写真かテキストを追加してね！');return}
+  let image=selectedPhoto>=0?safeImage(selectedPhoto):'';
+  if(composer==='story')state.stories.unshift({author,text,image,at:appNow().toISOString()});
+  else {state.posts.unshift({author,text,image,postedAt:appNow().toISOString()});state.likes=Object.fromEntries(Object.entries(state.likes).map(([k,v])=>[String(Number(k)+1),v]));state.comments=Object.fromEntries(Object.entries(state.comments).map(([k,v])=>[String(Number(k)+1),v]));state.igSaved=Object.fromEntries(Object.entries(state.igSaved).map(([k,v])=>[String(Number(k)+1),v]))}
+  save();nav('instagram');
+ }
+ });
+ let upload=document.getElementById('v21Upload');if(upload)upload.onchange=async()=>{let f=upload.files?.[0];if(!f)return;try{let img=await resize(f);state.photos.unshift(img);selectedPhoto=0;save();render()}catch(e){alert('写真を読み込めませんでした。小さめの画像で試してね。')}};
+}
+render=function(){
+ if(view==='v21Composer'){$('content').innerHTML=composerHTML();clock();bindV21();bindInstagramV11();return}
+ if(view==='v21Saved'){$('content').innerHTML=savedHTML();clock();bindV21();bindInstagramV11();return}
+ if(view==='v21Activity'){$('content').innerHTML=activityHTML();clock();bindV21();bindInstagramV11();return}
+ previousRender();
+ if(view==='instagram'){
+  document.querySelectorAll('.ig-top [data-ig="newpost"]').forEach(b=>{b.dataset.v21='newpost';b.removeAttribute('data-ig')});
+  document.querySelectorAll('.ig-top [data-ig="dmList"]').forEach(b=>{b.dataset.v21='activity';b.removeAttribute('data-ig')});
+  document.querySelectorAll('.ig-stories [data-ig="newstory"]').forEach(b=>{b.dataset.v21='newstory';b.removeAttribute('data-ig')});
+  document.querySelectorAll('[data-v19-save]').forEach(b=>{let i=b.dataset.v19Save;b.style.opacity=state.igSaved[i]?'0.5':'1';b.onclick=()=>{state.igSaved[i]=!state.igSaved[i];save();b.style.opacity=state.igSaved[i]?'0.5':'1'}});
+ }
+ if(view==='igProfile'){
+  const el=document.querySelector('.ig-profile-bio');if(el){const b=document.createElement('button');b.className='v21-btn';b.textContent='保存済みを見る';b.dataset.v21='saved';el.after(b)}
+ }
+ bindV21();
+};
+/* capture buttons in old screens that point to the old composer */
+document.addEventListener('click',e=>{const b=e.target.closest?.('[data-ig="newpost"], [data-ig="newstory"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();composer=b.dataset.ig==='newstory'?'story':'post';selectedPhoto=-1;nav('v21Composer')},true);
+try{render()}catch(e){console.error('V21 render',e)}
+})();
+</script>
 </body></html>
