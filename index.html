@@ -1,4 +1,4 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#171d39"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Virtual iPhone"><title>My iPhone — Ver.14</title><style>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#171d39"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Virtual iPhone"><title>My iPhone — Ver.16</title><style>
 *{box-sizing:border-box}body{margin:0;background:#15151c;color:white;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}.phone{position:relative;margin:auto;max-width:440px;height:100dvh;min-height:580px;overflow:hidden;background:linear-gradient(140deg,#151d42 2%,#654b98 40%,#eaa6a1 72%,#44336d);}.phone:before{content:'';position:absolute;width:110%;height:60%;top:14%;left:-20%;background:radial-gradient(ellipse,#f2b7c2aa,transparent 70%);transform:rotate(-25deg);pointer-events:none}.status{height:58px;display:flex;justify-content:space-between;align-items:center;padding:13px 30px 0;position:relative;z-index:5;font-weight:650;font-size:15px}.island{position:absolute;left:50%;top:11px;transform:translateX(-50%);height:34px;width:115px;border-radius:22px;background:#08080a}.screen{position:absolute;inset:58px 0 0;overflow:auto;padding:18px 22px 100px}.home{display:grid;grid-template-columns:repeat(4,1fr);gap:24px 12px;padding-top:44px}.appIcon{border:0;background:none;color:white;text-align:center;font-size:11px;padding:0;display:flex;align-items:center;flex-direction:column;gap:6px}.icon{height:62px;width:62px;border-radius:15px;display:grid;place-items:center;font-size:30px;box-shadow:0 3px 12px #0002}.ig{background:linear-gradient(35deg,#f9c746,#e33272,#713bc6)}.kakao{background:#f9e529;color:#342b17}.photos{background:#fff;color:#eb5599}.generic{background:#dedee7;color:#444}.dock{position:absolute;bottom:32px;left:18px;right:18px;border-radius:28px;background:#ffffff42;padding:14px;display:flex;justify-content:space-around}.bar{position:absolute;bottom:9px;left:50%;transform:translateX(-50%);height:5px;width:125px;background:white;border-radius:8px;z-index:10;cursor:pointer}.page{background:#f7f7f9;color:#17171b;position:absolute;inset:58px 0 0;overflow:auto;padding:18px 18px 90px}.page h1{font-size:30px;margin:12px 0 20px}.back{background:none;border:0;color:#1578f5;font-size:16px;padding:6px 0}.row{background:white;border-radius:13px;padding:14px;margin:9px 0;display:flex;align-items:center;gap:12px;width:100%;border:0;text-align:left;color:#222}.avatar{width:44px;height:44px;border-radius:50%;background:#ddd;display:grid;place-items:center;font-size:23px;flex-shrink:0}.muted{color:#777;font-size:12px}.primary{background:#1779f8;color:white;border:0;padding:12px 16px;border-radius:12px}.field{width:100%;border:1px solid #ddd;border-radius:10px;padding:12px;background:white;color:#111;margin:6px 0;font-size:16px}.chat{display:flex;flex-direction:column;gap:10px;min-height:55%;padding:12px 0}.bubble{max-width:82%;padding:11px 13px;border-radius:16px;background:#fff;align-self:flex-start;white-space:pre-wrap;overflow-wrap:anywhere}.mine{background:#f9e529;align-self:flex-end}.composer{display:flex;gap:8px;position:sticky;bottom:0;background:#f7f7f9;padding:10px 0}.composer input{flex:1;min-width:0}.gridphotos{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}.gridphotos img{width:100%;aspect-ratio:1;object-fit:cover}.post{background:white;border-radius:14px;margin:12px 0;padding:14px}.post img{width:100%;max-height:300px;object-fit:cover}.lock{position:absolute;inset:58px 0 0;display:flex;flex-direction:column;align-items:center;padding-top:70px;background:linear-gradient(145deg,#2d305c,#9a70b5,#f6b0b0);z-index:4}.locktime{font-size:78px;font-weight:200;letter-spacing:-4px}.lock button{margin-top:auto;margin-bottom:100px;border:1px solid #fff8;border-radius:30px;padding:14px 30px;background:#ffffff25;color:white}.hint{font-size:13px;color:#777;line-height:1.5}.ighead{display:flex;justify-content:space-between;align-items:center}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.tabs button{border:0;background:#e9e9ed;border-radius:9px;padding:10px}.tabs button.active{background:#222;color:#fff}input[type=file]{max-width:100%}@media(min-width:500px){body{padding:24px}.phone{height:min(880px,calc(100dvh - 48px));border-radius:44px;border:7px solid #35353a;box-shadow:0 15px 50px #0008}}
 
 /* Ver.5: iPhone 16 Pro inspired visual layer; original app logic retained */
@@ -236,4 +236,54 @@ render=function(){
 };
 try{render()}catch(e){console.error('Ver.13 refresh',e)}
 })();
-</script></body></html>
+</script>
+<style>
+/* Ver.16: Instagram interaction layer */
+.ig-page{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 95px)!important}.ig-bottom{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 2px);left:0;right:0;margin:0;z-index:8;padding:11px 5px 9px;box-shadow:0 -2px 12px #0000000b}.ig-bottom button{min-width:48px;min-height:42px}.ig-page .ig-top{position:relative}.ig-page .ig-post-header,.ig-page .ig-post-actions{min-height:48px}.ig-post-actions button{min-width:38px;min-height:40px}.ig-avatar{cursor:pointer}.ig-page .ig-inline{min-height:39px}.ig-userform{display:grid;gap:12px;margin-top:20px}.ig-userform label{font-size:13px;color:#555}.ig-userform input,.ig-userform textarea{display:block;width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;background:white;color:#111;font-size:16px;margin-top:5px}.ig-follow{background:#1877f2!important;color:#fff!important;border-color:#1877f2!important}.ig-follow.following{background:#eee!important;color:#222!important;border-color:#ddd!important}.ig-comment-row{display:flex;gap:7px;padding:7px 13px 13px}.ig-comment-row input{min-width:0;flex:1;border:1px solid #ddd;border-radius:20px;padding:9px 12px;font-size:16px;background:white;color:#222}.ig-comment-row button{background:none;border:0;color:#1682e8;font-weight:700}.ig-page .ig-post-media{max-height:460px}.ig-page .ig-post-media img{object-fit:cover}.ig-profile-grid button{color:#333;font-size:12px;padding:8px}.ig-page .ig-stories{margin-right:-17px}.ig-page .ig-post{margin-bottom:12px}
+@media(min-width:500px){.ig-bottom{position:sticky;bottom:-95px;margin:18px -17px -15px}}
+</style>
+<script>
+/* Version 16 is additive: all existing people, chats, photos and posts remain in localStorage. */
+(function(){
+ state.meProfile ||= {name:'自分',username:'my_account',bio:'',emoji:'🙂'};
+ state.followingIds ||= [];
+ const baseRender=render;
+ const origAll=igAllAccounts;
+ igAllAccounts=function(){return [{id:'me',...state.meProfile},...state.people]};
+ const origPerson=igPerson;
+ igPerson=function(id){return String(id)==='me'?igAllAccounts()[0]:origPerson(id)};
+ igHandle=function(p){return String(p?.username||p?.instagramId||p?.name||'my_account').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_\u3040-\u30ff\u3400-\u9fff]/g,'').slice(0,30)||'user'};
+ const oldProfile=igProfileHTML;
+ igProfileHTML=function(){
+  let html=oldProfile();const p=igPerson(igPersonId),mine=String(igPersonId)==='me';
+  if(mine) html=html.replace('<button class="ig-inline" data-ig="newpost">＋ 投稿を作成</button>','<button class="ig-inline" data-v16="editprofile">プロフィールを編集</button> <button class="ig-inline" data-ig="newpost">＋ 投稿</button>');
+  else if(p){const followed=state.followingIds.includes(String(p.id));html=html.replace(`<button class="ig-inline" data-ig="dm" data-id="${p.id}">メッセージ</button>`,`<button class="ig-inline ig-follow ${followed?'following':''}" data-v16="follow" data-id="${esc(p.id)}">${followed?'フォロー中':'フォローする'}</button> <button class="ig-inline" data-ig="dm" data-id="${esc(p.id)}">メッセージ</button>`)}
+  return html;
+ };
+ const oldFeed=igFeedHTML;
+ igFeedHTML=function(){let html=oldFeed();return html.replace(/<div class="ig-post-actions">/g,'<div class="ig-post-actions">');};
+ render=function(){
+  if(view==='igEditProfile'){
+   const p=state.meProfile;
+   $('content').innerHTML=`<section class="page ig-page"><header class="ig-top"><button class="back" data-v16="backprofile">‹ キャンセル</button><b>プロフィールを編集</b><span></span></header><form class="ig-userform" id="igMyProfile"><label>名前<input name="name" maxlength="40" value="${esc(p.name)}" required></label><label>ユーザーネーム<input name="username" maxlength="30" value="${esc(p.username)}" required></label><label>プロフィール画像（絵文字）<input name="emoji" maxlength="8" value="${esc(p.emoji)}"></label><label>自己紹介<textarea name="bio" rows="4" maxlength="500">${esc(p.bio)}</textarea></label><button class="primary">保存する</button></form>${igBottom()}</section>`;
+   clock();bindInstagramV11();
+  }else baseRender();
+  if(view==='instagram'){
+   document.querySelectorAll('.ig-post').forEach((post,i)=>{
+    const actions=post.querySelector('.ig-post-actions');
+    if(actions){const row=document.createElement('form');row.className='ig-comment-row';row.dataset.post=i;row.innerHTML='<input aria-label="コメント" placeholder="コメントを追加…" maxlength="300"><button type="submit">投稿</button>';post.appendChild(row)}
+   });
+  }
+  document.querySelectorAll('[data-v16]').forEach(b=>b.onclick=()=>{
+   const a=b.dataset.v16;
+   if(a==='editprofile')nav('igEditProfile');
+   if(a==='backprofile'){igPersonId='me';nav('igProfile')}
+   if(a==='follow'){let id=String(b.dataset.id);state.followingIds=state.followingIds.includes(id)?state.followingIds.filter(x=>x!==id):[...state.followingIds,id];save();render()}
+  });
+  const pf=document.getElementById('igMyProfile');if(pf)pf.onsubmit=e=>{e.preventDefault();let f=new FormData(pf);state.meProfile={name:String(f.get('name')).trim()||'自分',username:String(f.get('username')).trim().replace(/^@/,'')||'my_account',emoji:String(f.get('emoji')).trim()||'🙂',bio:String(f.get('bio'))};save();igPersonId='me';nav('igProfile')};
+  document.querySelectorAll('.ig-comment-row').forEach(f=>f.onsubmit=e=>{e.preventDefault();let v=f.querySelector('input').value.trim();if(!v)return;(state.comments[f.dataset.post]??=[]).push(`${state.meProfile.name}: ${v}`);save();render()});
+ };
+ try{render()}catch(e){console.error('Instagram v16',e)}
+})();
+</script>
+</body></html>
