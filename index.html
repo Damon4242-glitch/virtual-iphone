@@ -315,4 +315,132 @@ try{render()}catch(e){console.error('Ver.13 refresh',e)}
  try{render()}catch(e){console.error('v17',e)}
 })();
 </script>
+
+<style>
+/* V18: wallpaper preview and dependable visual application. No viewport/tap changes. */
+.phone.v18-home-wallpaper::before {opacity:0!important}
+.phone.v18-home-wallpaper .screen {background:transparent!important}
+.phone.v18-lock-wallpaper .lock {background-image:var(--v18-lock-bg)!important;background-size:cover!important;background-position:center!important}
+.v18-wall-status{padding:12px;border-radius:12px;background:#e8f4ed;color:#17663b;font-size:14px;margin:10px 0}
+.v18-wall-guide{color:#62626b;font-size:13px;line-height:1.5;margin:12px 0}
+.wallpaper-page .wallpaper-choice{touch-action:manipulation}
+</style>
+<script>
+/* V18: wrap the working V17 renderer; leave the existing iPhone layout intact. */
+(function(){
+  const previousRender=render;
+  function fixWallpaper(){
+    const phone=document.querySelector('.phone');
+    if(!phone)return;
+    const data=state.wallpapers||{};
+    const val=(w)=>{
+      if(!w)return null;
+      if(w.type==='photo'&&typeof w.value==='string'&&w.value.startsWith('data:image/'))
+        return 'url("'+w.value+'")';
+      if(w.type==='preset'){
+        const palette=[
+          'radial-gradient(ellipse at 75% 65%,#384565,transparent 55%),linear-gradient(155deg,#080c1d,#202d52 60%,#070b1c)',
+          'radial-gradient(ellipse at 65% 72%,#f8c3d4,transparent 60%),linear-gradient(155deg,#4e316e,#a268a0 58%,#e9a5b8)',
+          'radial-gradient(ellipse at 65% 65%,#48b6c8,transparent 55%),linear-gradient(155deg,#071a42,#165e91 60%,#85c7d7)',
+          'radial-gradient(ellipse at 70% 60%,#e4d5e9,transparent 55%),linear-gradient(150deg,#a8b8d6,#f1e8ef 60%,#a9a4c6)',
+          'radial-gradient(ellipse at 80% 65%,#5a5862,transparent 58%),linear-gradient(140deg,#09090d,#2b2932 65%,#0a0a0d)',
+          'radial-gradient(ellipse at 70% 75%,#ffbb9e,transparent 50%),linear-gradient(160deg,#232f72,#8d6aa6 55%,#e58e9d)'
+        ];
+        return palette[w.index]||null;
+      }
+      return null;
+    };
+    const home=val(data.home),lock=val(data.lock);
+    phone.classList.toggle('v18-home-wallpaper',Boolean(home));
+    phone.classList.toggle('v18-lock-wallpaper',Boolean(lock));
+    if(home){phone.style.setProperty('background',home,'important');phone.style.backgroundSize='cover';phone.style.backgroundPosition='center'}
+    else{phone.style.removeProperty('background');phone.style.removeProperty('background-size');phone.style.removeProperty('background-position')}
+    const lockNode=phone.querySelector('.lock');
+    if(lockNode){
+      if(lock){lockNode.style.setProperty('background',lock,'important');lockNode.style.backgroundSize='cover';lockNode.style.backgroundPosition='center'}
+      else{lockNode.style.removeProperty('background');lockNode.style.removeProperty('background-size');lockNode.style.removeProperty('background-position')}
+    }
+  }
+  render=function(){
+    previousRender();
+    fixWallpaper();
+    if(view==='wallpaper'){
+      const page=document.querySelector('.wallpaper-page');
+      if(page){
+        const grid=page.querySelector('.wallpaper-grid');
+        if(grid){
+          const info=document.createElement('div');
+          info.className='v18-wall-status';
+          info.textContent='壁紙を選ぶと自動保存されます。ホーム画面に戻って確認してね。';
+          grid.before(info);
+        }
+      }
+    }
+    if(view==='settings'){
+      const page=document.querySelector('.page');
+      if(page&&!page.querySelector('[data-v17="wallpaper"]')){
+        const btn=document.createElement('button');
+        btn.className='row';
+        btn.textContent='▧ 壁紙を変更 ›';
+        btn.onclick=()=>nav('wallpaper');
+        page.prepend(btn);
+      }
+    }
+  };
+  try{render()}catch(err){console.error('V18 wallpaper render:',err)}
+})();
+</script>
+
+<style>
+/* Ver 19: Instagram dark UI based on supplied screenshots. Other apps untouched. */
+.ig-page.v19-ig,.ig-page.v19-ig ~ *{color:#f6f7f9}
+.ig-page.v19-ig{background:#0b0e14!important;color:#f6f7f9!important;padding-left:0!important;padding-right:0!important}
+.v19-ig .ig-top{padding:8px 16px 12px!important;border:0!important;min-height:61px!important;background:#0b0e14;gap:8px}
+.v19-ig .ig-brand{font-family:'Brush Script MT','Snell Roundhand',cursive!important;font-size:34px!important;font-weight:700!important;letter-spacing:-1px!important;font-style:normal!important}
+.v19-ig .ig-action,.v19-ig .ig-bottom button,.v19-ig .ig-post-actions button{color:#f6f7f9!important}
+.v19-ig .ig-top .ig-action{padding:4px;min-width:42px}
+.v19-ig .ig-stories{padding:12px 13px 18px!important;gap:18px!important;margin:0!important;border-bottom:1px solid #191d25}
+.v19-ig .ig-story{width:78px;min-width:78px;font-size:12px;color:#f7f7f8!important;gap:8px}
+.v19-ig .ig-ring{height:76px;width:76px;padding:3px}
+.v19-ig .ig-ring-inner{border:3px solid #0b0e14;background:#292c32;color:white}
+.v19-ig .ig-post{background:#0b0e14!important;border:0!important;margin:0 0 10px!important}
+.v19-ig .ig-post-header{padding:12px 13px;min-height:64px;gap:10px;font-size:14px}
+.v19-ig .ig-avatar{background:#2d313a;color:white;border-radius:50%;width:39px;height:39px;overflow:hidden}
+.v19-ig .ig-post-media{aspect-ratio:1/1.06;max-height:none!important;background:#0b0e14;color:#bbb}
+.v19-ig .ig-post-media img{object-fit:contain!important}
+.v19-ig .ig-post-actions{padding:9px 12px 2px;gap:13px;min-height:50px}
+.v19-ig .ig-post-actions button{min-width:34px;min-height:40px;display:grid;place-items:center}
+.v19-ig .ig-post-actions svg{width:27px;height:27px;stroke:#f6f7f9;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.v19-ig .ig-post-text{padding:0 15px 14px;font-size:14px;color:#f4f4f5}
+.v19-ig .ig-post-text .muted{color:#b8b9c0}
+.v19-ig .ig-bottom{background:#0b0e14!important;border-top:1px solid #1b1e27!important;box-shadow:none!important;bottom:calc(env(safe-area-inset-bottom,0px) + 1px)!important;padding:8px 3px 9px!important}
+.v19-ig .ig-bottom svg{height:27px;width:27px;stroke-width:2.2}
+.v19-ig .ig-bottom button{min-width:50px;min-height:45px}
+.v19-ig .ig-bottom .v19-my-avatar{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:#353941;font-size:17px;overflow:hidden}
+.v19-ig .ig-bottom .v19-my-avatar img{width:100%;height:100%;object-fit:cover}
+.v19-ig .ig-profile-head,.v19-ig .ig-profile-bio{padding-left:16px;padding-right:16px}
+.v19-ig .ig-profile-grid{margin:14px 0!important}
+.v19-ig .ig-profile-grid button{border-color:#0b0e14!important}
+.v19-ig .ig-inline{background:#272a31!important;color:white!important;border-color:#353940!important}
+.v19-ig .ig-search{background:#24272e;color:#f6f7f9;border:0;margin-left:14px;width:calc(100% - 28px)}
+.v19-ig .ig-search-result{background:#0b0e14;color:white;padding-left:15px}
+.v19-ig .ig-search-grid{margin:14px 0}
+.v19-ig .ig-comment-row input{background:#252830;color:#fff;border-color:#454850}
+.v19-ig .ig-comment-row button{color:#82baff}
+.v19-ig .ig-post-more{margin-left:auto!important;font-size:27px!important;line-height:1}
+.v19-ig .ig-post-actions .v19-save{margin-left:auto}
+.v19-ig .ig-profile-stats,.v19-ig .ig-profile-bio{color:#fff}
+</style>
+<script>
+/* Ver 19: replace only Instagram rendering; retain original event handlers and state. */
+(function(){
+const icon=(name)=>{const p={home:'<path d="M3 10.5 12 3l9 7.5V21h-6.5v-7h-5v7H3z"/>',reels:'<rect x="3" y="3" width="18" height="18" rx="5"/><path d="M3 9h18M8 3l4 6M15 3l4 6"/><path d="m10 12 5 3-5 3z"/>',search:'<circle cx="10.8" cy="10.8" r="7.7"/><path d="m16.5 16.5 5 5"/>',heart:'<path d="M20.8 4.8a5.5 5.5 0 0 0-7.8 0L12 5.9l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.4a5.5 5.5 0 0 0 0-7.8z"/>',comment:'<path d="M21 11.7a8.8 8.8 0 0 1-9.2 8.7 10 10 0 0 1-4.5-1.2L3 21l1.3-4.7A9 9 0 1 1 21 11.7z"/>',send:'<path d="M22 2 11 13M22 2 15 22l-4-9-9-4z"/>',save:'<path d="M5 3h14v18l-7-5-7 5z"/>',plus:'<path d="M12 2v20M2 12h20"/>',menu:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'};return `<svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p[name]||p.home}</svg>`};
+const avatar=(p)=>p?.photo||p?.avatar||p?.image ? `<img src="${p.photo||p.avatar||p.image}" alt="">` : esc(p?.emoji||'👤');
+igBottom=function(){const me=igPerson('me');return `<nav class="ig-bottom"><button data-ig="feed" aria-label="ホーム">${icon('home')}</button><button data-ig="explore" aria-label="リールと検索">${icon('reels')}</button><button data-ig="dmList" aria-label="メッセージ">${icon('send')}</button><button data-ig="explore" aria-label="検索">${icon('search')}</button><button data-ig="profile" data-id="me" aria-label="プロフィール"><span class="v19-my-avatar">${avatar(me)}</span></button></nav>`};
+igFeedHTML=function(){let stories=igActiveStories();let me=igPerson('me');return `<section class="page ig-page v19-ig"><header class="ig-top"><button class="ig-action" data-ig="newpost" aria-label="投稿を作成">${icon('plus')}</button><span class="ig-brand">Instagram</span><button class="ig-action" data-ig="dmList" aria-label="メッセージ">${icon('heart')}</button></header><div class="ig-stories"><button class="ig-story" data-ig="newstory"><span class="ig-ring" style="background:#3b3e46"><span class="ig-ring-inner">${avatar(me)}</span></span>ストーリーズ</button>${stories.map((st,i)=>{let a=igAllAccounts().find(x=>x.name===st.author);return `<button class="ig-story" data-ig="storyview" data-index="${i}"><span class="ig-ring"><span class="ig-ring-inner">${a?avatar(a):st.image?`<img src="${st.image}" alt="">`:'👤'}</span></span>${esc(st.author)}</button>`}).join('')}</div>${state.posts.map((post,i)=>{let a=igAllAccounts().find(x=>x.name===post.author);return `<article class="ig-post"><div class="ig-post-header">${igAvatar(a)}<b>${esc(post.author)}</b><button class="ig-action ig-post-more" data-editpost="${i}" aria-label="投稿のオプション">${icon('menu')}</button></div>${post.image?`<div class="ig-post-media"><img src="${post.image}" alt="投稿画像"></div>`:`<div class="ig-post-media" style="padding:20px;text-align:center;white-space:pre-wrap">${esc(post.text||'投稿')}</div>`}<div class="ig-post-actions"><button data-like="${i}" aria-label="いいね">${state.likes[i]?'❤️':icon('heart')}</button><button data-comment="${i}" aria-label="コメント">${icon('comment')}</button><button data-ig="dmList" aria-label="シェア">${icon('send')}</button><button class="v19-save" data-v19-save="${i}" aria-label="保存">${icon('save')}</button></div><div class="ig-post-text"><b>${esc(post.author)}</b> ${esc(post.text||'')}${(state.comments[i]||[]).map(x=>`<p class="muted">${esc(x)}</p>`).join('')}</div></article>`}).join('')||'<p style="text-align:center;padding:80px 20px;color:#a6a7b1">まだ投稿がありません。左上の＋から投稿を作成できます。</p>'}${igBottom()}</section>`};
+const prevRender=render;
+render=function(){prevRender();const page=document.querySelector('.ig-page');if(page)page.classList.add('v19-ig');document.querySelectorAll('[data-v19-save]').forEach(b=>b.onclick=()=>{b.style.opacity=b.style.opacity==='0.5'?'1':'0.5'});};
+try{render()}catch(e){console.error('V19 Instagram',e)}
+})();
+</script>
 </body></html>
